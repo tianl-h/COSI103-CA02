@@ -7,16 +7,17 @@ const layouts = require("express-ejs-layouts");
 const pw_auth_router = require('./routes/pwauth')
 const toDoRouter = require('./routes/todo');
 const weatherRouter = require('./routes/weather');
-
+const gptRouter = require('./routes/gpt');
+const methodOverride = require('method-override');
 const User = require('./models/User');
 
 /* **************************************** */
 /*  Connecting to a Mongo Database Server   */
 /* **************************************** */
-const mongodb_URI = 'mongodb://127.0.0.1:27017/pwdemo';
+const mongodb_URI = 'mongodb://127.0.0.1:27017/gpt';
 console.log('MONGODB_URI=', mongodb_URI);
 
-const mongoose = require( 'mongoose' );
+const mongoose = require( 'mongoose', , { useNewUrlParser: true } );
 
 mongoose.connect( mongodb_URI);
 
@@ -87,9 +88,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-
-
+app.use(methodOverride('_method'));
 
 app.use(pw_auth_router)
 
@@ -108,6 +107,7 @@ app.get('/about',
 
 app.use(toDoRouter);
 app.use(weatherRouter);
+app.use(gptRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
