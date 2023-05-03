@@ -17,7 +17,7 @@ const User = require('./models/User');
 const mongodb_URI = 'mongodb://127.0.0.1:27017/gpt';
 console.log('MONGODB_URI=', mongodb_URI);
 
-const mongoose = require( 'mongoose', , { useNewUrlParser: true } );
+const mongoose = require( 'mongoose', { useNewUrlParser: true } );
 
 mongoose.connect( mongodb_URI);
 
