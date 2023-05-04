@@ -29,6 +29,11 @@ class GPT {
     const response = await this.getResponse("Generate a poem about the programming language  "+ prompt);
     return response;
   }
+  async get_info(prompt) {
+    // Generate a GPT response with a given prompt
+    const response = await this.getResponse("provide me a rarely known  but interesting information in short regarding "+ prompt);
+    return response;
+  }
   
 
   async getResponse(prompt) {
@@ -127,6 +132,13 @@ router.get('/gpt/bing_form',
     res.render('gpt/bing_form');
   }
 );
+// Route to display Feifan's GPT form
+router.get('/gpt/feifan_form',
+  isLoggedIn,
+  (req, res, next) => {
+    res.render('gpt/feifan_form');
+  }
+);
 // Route to handle Tianling's form submission and display GPT response
 router.post('/gpt/tianling-response',
   isLoggedIn,
@@ -162,6 +174,19 @@ router.post('/gpt/bing-response',
     try {
       const userInput = req.body.userInput;
       const response = await gpt.get_poem(userInput);
+      res.render('gpt/result', { prompt: userInput, response });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+// Route to handle Feifan's form Poem Generator submission and display GPT response
+router.post('/gpt/feifan-response',
+  isLoggedIn,
+  async (req, res, next) => {
+    try {
+      const userInput = req.body.userInput;
+      const response = await gpt.get_info(userInput);
       res.render('gpt/result', { prompt: userInput, response });
     } catch (error) {
       next(error);
