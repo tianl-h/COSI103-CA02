@@ -87,4 +87,26 @@ router.post('/gpt-response',
   }
 );
 
+// Route to display Tianling's GPT form
+router.get('/gpt/tianling_form',
+  isLoggedIn,
+  (req, res, next) => {
+    res.render('gpt/team1-form');
+  }
+);
+
+// Route to handle Team 1's form submission and display GPT response
+router.post('/gpt/tianling-response',
+  isLoggedIn,
+  async (req, res, next) => {
+    try {
+      const userInput = req.body.userInput;
+      const response = await gpt.getTeam1Response(userInput);
+      res.render('gpt/result', { prompt: userInput, response });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 module.exports = router;
