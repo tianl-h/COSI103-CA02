@@ -26,7 +26,7 @@ class GPT {
   }
     async get_poem(prompt) {
     // Generate a GPT response with a given prompt
-    const response = await this.getResponse("Please enter your favorite programming language "+ prompt);
+    const response = await this.getResponse("Generate a poem about "+ prompt);
     return response;
   }
   
