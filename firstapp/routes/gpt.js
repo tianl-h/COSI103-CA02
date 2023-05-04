@@ -13,6 +13,12 @@ class GPT {
     this.modelEngine = 'text-davinci-003';
   }
 
+  async get_tech_chef_challenge(prompt) {
+    // Generate a GPT response with a given prompt
+    const response = await this.getResponse(prompt);
+    return response;
+  }
+
   async getResponse(prompt) {
     const response = await axios.post(
       'https://api.openai.com/v1/engines/text-davinci-003/completions',
@@ -91,17 +97,17 @@ router.post('/gpt-response',
 router.get('/gpt/tianling_form',
   isLoggedIn,
   (req, res, next) => {
-    res.render('gpt/team1-form');
+    res.render('gpt/tianling_form');
   }
 );
 
-// Route to handle Team 1's form submission and display GPT response
+// Route to handle Tianling's form submission and display GPT response
 router.post('/gpt/tianling-response',
   isLoggedIn,
   async (req, res, next) => {
     try {
       const userInput = req.body.userInput;
-      const response = await gpt.getTeam1Response(userInput);
+      const response = await gpt.get_tech_chef_challenge(userInput);
       res.render('gpt/result', { prompt: userInput, response });
     } catch (error) {
       next(error);
