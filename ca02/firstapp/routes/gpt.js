@@ -18,6 +18,13 @@ class GPT {
     const response = await this.getResponse(prompt);
     return response;
   }
+  
+  async get_joke(prompt) {
+    // Generate a GPT response with a given prompt
+    const response = await this.getResponse("May I get a joke about "+ prompt);
+    return response;
+  }
+  
 
   async getResponse(prompt) {
     const response = await axios.post(
@@ -101,6 +108,14 @@ router.get('/gpt/tianling_form',
   }
 );
 
+// Route to display Shan's GPT form
+router.get('/gpt/shan_form',
+  isLoggedIn,
+  (req, res, next) => {
+    res.render('gpt/shan_form');
+  }
+);
+
 // Route to handle Tianling's form submission and display GPT response
 router.post('/gpt/tianling-response',
   isLoggedIn,
@@ -108,6 +123,21 @@ router.post('/gpt/tianling-response',
     try {
       const userInput = req.body.userInput;
       const response = await gpt.get_tech_chef_challenge(userInput);
+      res.render('gpt/result', { prompt: userInput, response });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+
+// Route to handle shan's form Joke Generator submission and display GPT response
+router.post('/gpt/shan-response',
+  isLoggedIn,
+  async (req, res, next) => {
+    try {
+      const userInput = req.body.userInput;
+      const response = await gpt.get_joke(userInput);
       res.render('gpt/result', { prompt: userInput, response });
     } catch (error) {
       next(error);
